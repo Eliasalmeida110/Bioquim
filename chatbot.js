@@ -2,9 +2,8 @@ const qrcode = require('qrcode-terminal');
 const { Client, MessageMedia, Chat} = require('whatsapp-web.js');
 
 const client = new Client();
-const media = MessageMedia.fromFilePath('C:\\Users\\henri\\Downloads\\legal.jpg')       ;
+const media = MessageMedia.fromUrl("https://t1.uc.ltmcdn.com/pt/posts/9/7/6/tipos_de_triangulos_de_acordo_com_seus_lados_30679_0_600.jpg");
 
-client.initialize();
 client.on('qr', (qr) => {
     console.log('qr recieved:');
     qrcode.generate(qr, {small:true});
@@ -12,18 +11,22 @@ client.on('qr', (qr) => {
 
 client.on('ready', () => {console.log('client is ready')});
 
-client.on('message', (msg) => {
+client.initialize();
+
+client.on('message', async (msg) => {
+    client.sendMessage(msg.from,'Olá seja bem vindo\nEscolha a modalidade de atendimento\n1- Requerimento de análise clínica\n2 - Resultado da análise clínica').then();
     if(msg.body){
-        msg.reply('Olá seja bem vindo\nEscolha a modalidade de atendimento\n1- Requerimento de análise clínica\n2 - Resultado da análise clínica')
-        if(msg.body === '1'){
-            msg.reply('escolha os atendimentos requeridos. ao final enviaremos um boleto\na\nb\nc\nd');
-            msg.reply('gerando boleto...');
-            msg.reply('enviando');
-            Chat.sendMessage(media,{caption:'fui burro lol'});
-        }else if(msg.body === '2'){
-            msg.reply('acho que funcionou');
-        }else{
-            msg.reply('não tem nada aqui');
+        var ans = msg.body;
+        switch(ans){
+            case '1':
+                client.sendMessage(msg.from,"test 1").then();
+            break;
+            case '2':
+                client.sendMessage(msg.from,"test 2").then();
+            break;
+            default:
+                client.sendMessage(msg.from, "AAAAAAAAAAAAAAAAAAAAAAAAAAAAA").then();
+            break;
         }
     }
 })
